@@ -13,6 +13,8 @@
     <link rel="stylesheet" href="./assets/css/componentes/inputs.css">
     <link rel="stylesheet" href="./assets/css/componentes/botao.css">
     <link rel="stylesheet" href="./assets/css/cadastro_produto.css">
+    
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simple-mask-money/2.3.2/jquery.maskMoney.min.js"></script>
 </head>
 <body>
     <header class="cabecalho container">
@@ -29,25 +31,37 @@
     <main class="container flex flex--centro flex--coluna">
         <section class="cartao cadastro">
             <h1 class="cartao__titulo">Cadastrar um produto</h1>
-            <form action="./cadastro_produto_concluido.html" class="flex flex--coluna">
+            <form action="./cadastro_produto_concluido.html" class="flex flex--coluna" id="form-produto">
+
                 <div class="input-container">
-                    <input name="nome" id="nome" class="input" type="text" placeholder="Nome">
+                    <input name="nome" id="nome" class="input" type="text" placeholder="Nome" required>
                     <label class="input-label" for="nome">Nome</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
+                
                 <div class="input-container cadastro__preco-container">
-                    <input name="preco" id="preco" class="input" type="text" placeholder="Preço">
+                    <input name="preco" id="preco" class="input" type="text" placeholder="Preço" required>
                     <label class="input-label" for="preco">Preço</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
+
                 <div class="input-container cadastro__descricao-container">
-                    <input class="input" name="descricao" id="descricao" placeholder="Descrição">
+                    <input class="input" name="descricao" id="descricao" placeholder="Descrição" required>
                     <label class="input-label" for="descricao">Descrição</label>
                     <span class="input-mensagem-erro">Este campo não está válido</span>
                 </div>
+                
+                <div class="input-container cadastro__quantidade-container">
+                    <input name="quantidade" id="quantidade" class="input" type="number" placeholder="Quantidade em estoque" required>
+                    <label class="input-label" for="quantidade">Quantidade em estoque</label>
+                    <span class="input-mensagem-erro">Este campo não está válido</span>
+                </div>
+
                 <button class="botao">Cadastrar produto</button>
             </form>
         </section>
     </main>
+    <script src="./js/app.js" type="module"></script>
+
 </body>
 </html>

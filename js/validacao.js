@@ -23,7 +23,19 @@ const tiposDeErro = [
 
 const mensagensDeErro = {
     nome: {
-        valueMissing: 'O campo de nome não pode estar vazio.'
+        valueMissing: 'O campo de nome não pode estar vazio.',
+        patternMismatch: 'O nome deve conter apenas letras.'
+    },
+    preco: {
+        valueMissing: 'O campo de preço não pode estar vazio.',
+        customError: 'O preço deve ser um valor válido.'
+    },
+    descricao: {
+        valueMissing: 'O campo de descrição não pode estar vazio.'
+    },
+    quantidade: {
+        valueMissing: 'O campo de quantidade não pode estar vazio.',
+        customError: 'A quantidade deve ser maior que 0.'
     },
     email: {
         valueMissing: 'O campo de email não pode estar vazio.',
@@ -54,13 +66,27 @@ const mensagensDeErro = {
     },
     estado: {
         valueMissing: 'O campo de estado não pode estar vazio.'
+    },
+    telefone: {
+        valueMissing: 'O campo de telefone não pode estar vazio.',
+        customError: 'O telefone digitado não é válido.'
+    },
+    instagram: {
+        valueMissing: 'O campo Instagram não pode estar vazio.',
+        customError: 'O nome de usuário do Instagram deve começar com @.'
     }
 }
 
 const validadores = {
-    dataNascimento:input => validaDataNascimento(input),
-    cpf:input => validaCPF(input),
-    cep:input => recuperarCEP(input)
+    nome: input => validaNome(input),
+    preco: input => validaPreco(input),
+    descricao: input => validaDescricao(input),
+    quantidade: input => validaQuantidade(input),
+    dataNascimento: input => validaDataNascimento(input),
+    cpf: input => validaCPF(input),
+    cep: input => recuperarCEP(input),
+    telefone: input => validaTelefone(input),
+    instagram: input => validaInstagram(input)
 }
 
 function mostraMensagemDeErro(tipoDeInput, input) {
@@ -158,6 +184,37 @@ function confirmaDigito(soma) {
     return 11 - (soma % 11)
 }
 
+function validaTelefone(input) {
+    const telefone = input.value.replace(/\D/g, '')
+    let mensagem = ''
+    
+    if (telefone.length < 11 || telefone.length > 11) {
+        mensagem = 'O número de telefone não é válido.'
+    } 
+    else if (!['83'].includes(telefone.substring(0, 2))) {
+        mensagem = 'O DDD informado não é válido.'
+    } 
+    else if (telefone.charAt(2) !== '9') {
+        mensagem = 'O número de telefone deve começar com 9 após o DDD.'
+    }
+    
+    input.setCustomValidity(mensagem)
+}
+
+function validaInstagram(input) {
+    const instagram = input.value.trim()
+    let mensagem = ''
+
+    if (!instagram) {
+        mensagem = 'O Instagram não pode estar vazio.'
+    } else if (!instagram.startsWith('@')) {
+        mensagem = 'O nome de usuário do Instagram deve começar com @.'
+    }
+
+    input.setCustomValidity(mensagem)
+}
+
+
 function recuperarCEP(input) {
     const cep = input.value.replace(/\D/g, '')
     const url = `https://viacep.com.br/ws/${cep}/json/`
@@ -194,4 +251,34 @@ function preencheCamposComCEP(data) {
     logradouro.value = data.logradouro
     cidade.value = data.localidade
     estado.value = data.uf
+}
+
+function validaDescricao(input) {
+    let mensagem = ''
+
+    if (!input.value.trim()) {
+        mensagem = 'A descrição não pode estar vazia.'
+    }
+
+    input.setCustomValidity(mensagem)
+}
+
+function validaQuantidade(input) {
+    const quantidade = input.value.trim();
+    let mensagem = ''
+
+    if (!quantidade || quantidade <= 0) {
+        mensagem = 'A quantidade deve ser maior que 0.'
+    }
+
+    input.setCustomValidity(mensagem)
+}
+function validaPreco(input) {
+    const preco = input.value.replace(/[^\d,]/g, '').replace(',', '.')
+
+    if (!preco || parseFloat(preco) <= 0) {
+        mensagem = 'O preço deve ser um valor válido.'
+    }
+
+    input.setCustomValidity(mensagem)
 }
